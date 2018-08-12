@@ -13,6 +13,11 @@
 </head>
 <body>
     <div class="container">
+        <hr>
+            <small class="text-muted d-block">@@@ Don't forget to press Update button. @@@</small>
+            <small class="text-muted d-block">@@@ If you won't press update button maybe your data will missing @@@</small>
+            <small class="text-muted d-block">@@@ Get some bug or Need for Info contact <span><a href="#">afumagic3@gmail.com</a></span> @@@</small>
+        <hr>
         <div class="row mt-4">
             <div class="col-4 col-sm-4">
                 <label class="text-center d-block bg-secondary text-white py-1 rounded">Node</label>
@@ -25,16 +30,34 @@
                 <small class="form-text text-muted">Example input data : project1,project2,project3</small>
             </div>
         </div>
-        <hr>
     </div>
     <form id="myForm" class="container my-3">
         <a class="bg-success d-block text-center rounded mt-4" id="newNodeButton" href="#" data-toggle="tooltip" data-placement="top" title="Add new node"><i class="fas fa-plus p-2" style="color:white; font-size: 14px;"></i></a>
-        <button id="createButton" type="submit" class="btn btn-danger mt-5 d-block">Create Chart!</button>
+        <button id="createButton" type="submit" class="btn btn-primary mt-5 d-block">Create Chart!</button>
     </form>
 
     <script>
         var node = []
         var member = 0
+
+        function RemoveLink(id) {
+            let num = id.substring(10);
+            let nodeName = $('#nodeInput'+num).val() 
+            $('#blockAppend'+num).remove()
+            //clear node data and member
+            for(let i=0;i<node.length;i++) {
+                if(nodeName==node[i]) {
+                    node[i] = ''
+                    for(let j=i;j<node.length-1;j++) {
+                        node[j] = node[j+1] 
+                    }
+                    node.pop()
+                    console.log('now node is :', node)
+                    member--
+                    break
+                }
+            }
+        }
 
         function AddLink(id) {
             //id => addLink?
@@ -100,17 +123,41 @@
 
         function AppendNewNode(val1, val2) {
             let appendString = 
-                '<div class="row justify-content-md-center">'
+                '<div id="blockAppend'+member+'" class="row justify-content-md-center">'
                     +'<div class="col-4 col-sm-4 mt-2">'
-                        +'<input value="'+val1+'" type="text" class="form-control nn" id="nodeInput'+member+'" placeholder="Enter node name">'
+                        +'<div class="row">'
+                            +'<div class="col">'
+                                +'<input value="'+val1+'" type="text" class="form-control nn" id="nodeInput'+member+'" placeholder="Enter node name">'
+                            +'</div>'
+                        +'</div>'
+                        +'<div class="row">'
+                            +'<div class="col mt-2">'
+                                +'<img height="90" width="160" src="http://www.jeffreythompson.org/images/blank-email-pixels.jpg" alt="">'
+                            +'</div>'
+                        +'</div>'
                     +'</div>'
                     +'<div class="col-8 col-sm-6 mt-2">'
                         +'<textarea class="form-control ll" rows="5" id="linksInput'+member+'">'+val2+'</textarea>'
                     +'</div>'
-                    +'<div class="col-sm-2 mt-2">'
-                            +'<button onclick="AddLink(this.id);" id="addLink'+member+'"type="submit" class="btnAddLink btn btn-success btn-block">Update</button>'
+                    +'<div class="col-sm-2">'
+                        +'<div class="row mt-2">'
+                            +'<div class="col">'
+                                +'<button onclick="AddLink(this.id);" id="addLink'+member+'"type="submit" class="btnAddLink btn btn-success btn-block">Update</button>'
+                            +'</div>'
+                        +'</div>'
+                        +'<div class="row mt-2">'
+                            +'<div class="col">'
+                                +'<button onclick="AddImage(this.id);" id="addImage'+member+'"type="submit" class="btnAddImage btn btn-warning btn-block">Add Image</button>'
+                            +'</div>'
+                        +'</div>'
+                        +'<div class="row mt-2">'
+                            +'<div class="col">'
+                                +'<button onclick="RemoveLink(this.id);" id="removeLink'+member+'"type="submit" class="btnRemoveLink btn btn-danger btn-block">Remove</button>'
+                            +'</div>'
+                        +'</div>'
                     +'</div>'
                 +'</div>'
+                +'<hr>'
 
             $(appendString).insertBefore('#newNodeButton')
             member++
@@ -185,6 +232,9 @@
                 //console.log(linksString)
                 //console.log(nodeName)
                 let links = linksString.split(",")
+                if(links.length==1 && links[0]=='') {
+                    links = []
+                }
                 obj = {
                     name: nodeName,
                     imports: links
@@ -209,6 +259,7 @@
                     alert('Can not crate, Watch your data and rewrite!')
                 }
             })
+
             
         })
 
