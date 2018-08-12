@@ -43,8 +43,9 @@
             let linksString = $('#linksInput'+num).val()
             let links = linksString.split(",");
 
-            if(IsUniqueNode(nodeString) && node!='') {
-                
+            console.log(nodeString)
+            if(IsUniqueNode(nodeString) && nodeString!='') {
+                console.log('push self')
                 node.push(nodeString)
             }
 
@@ -59,6 +60,15 @@
         }
 
         function CreateNewNodeFromLinks(links) {
+            for(let i=1;i<links.length;i++) {
+                for(let j=0;j<i;j++) {
+                    if(links[i]==links[j]) {
+                        console.log('is same')
+                        alert('Error can not input same links!!!')
+                        return
+                    }
+                }
+            }
             for(let i=0;i<links.length;i++) {
                 if(IsUniqueNode(links[i]) && links[i]!=='') {
                     AppendNewNode(links[i], '')
@@ -66,6 +76,7 @@
                 }
             }
         }
+
 
         function IsLinkSameOwnNode(node, links) {
             for(let i=0;i<links.length;i++) {
@@ -79,9 +90,11 @@
         function IsUniqueNode(name) {
             for(let i=0;i<node.length;i++) {
                 if(name==node[i]) {
+                    console.log('same btw :',name,node[i])
                     return false
                 }
             }
+            console.log('ttt')
             return true
         }
 
@@ -107,17 +120,44 @@
             let nodes = $('.nn')
             let links = $('.ll')
             console.log('nodes :', nodes.length)
-            console.log()
+            
+            if(member==0) {
+                return false
+            }
+
             for(let i=1;i<nodes.length;i++) {
                 for(let j=0;j<i;j++) {
                     let n1 = $('#'+nodes[i].id).val() 
-                    let n2 = $('#'+nodes[j].id).val() 
+                    let n2 = $('#'+nodes[j].id).val()
                     if(n1==n2) {
-                        console.log('is same btw '+n1+', '+n2)
+                        console.log('Error can not input same links!!!')
+                        //alert('Error can not input same links!!!')
                         return false
                     }
                 }
             }
+
+            for(let i=0;i<links.length;i++) {
+                let string = $('#'+links[i].id).val()
+                let linksArray = string.split(',') 
+                for(let j=1;j<linksArray.length;j++) {
+                    for(let k=0;k<j;k++) {
+                        if(linksArray[j]==linksArray[k]) {
+                            console.log()
+                            return false                        
+                        }
+                    } 
+                }
+            }
+
+            for(let i=0;i<nodes.length;i++) {
+                let n = $('#'+nodes[i].id).val()
+                if(n==='') {
+                    console.log('is emply field')
+                    return false
+                }
+            }
+
             console.log('links :', links)
             return true
         }
@@ -151,7 +191,10 @@
             $('#createButton').on('click', function() {
                 if(CheckFormat()) {
                     MakeJsonData()
-                } 
+                    alert('Chart is created Success')
+                }else {
+                    alert('Can not crate, Watch your data and rewrite!')
+                }
             })
             
         })
