@@ -143,10 +143,22 @@
                 for(let j=1;j<linksArray.length;j++) {
                     for(let k=0;k<j;k++) {
                         if(linksArray[j]==linksArray[k]) {
-                            console.log()
+                            console.log('same inside links')
                             return false                        
                         }
                     } 
+                }
+            }
+
+            for(let i=0;i<links.length;i++) {
+                let nodeString = $('#'+nodes[i].id).val()
+                let string = $('#'+links[i].id).val()
+                let linksArray = string.split(',') 
+                for(let i=0;i<linksArray.length;i++) {
+                    if(linksArray[i] == nodeString) {
+                        console.log('links same own node')
+                        return false
+                    }
                 }
             }
 
@@ -180,6 +192,7 @@
                 data.push(obj)
             }
             console.log('data is : ', data)
+            console.log('jsonString data is : ', JSON.stringify(data))
         }
 
         $(document).ready(function() {
