@@ -42,30 +42,38 @@
             let nodeString = $('#nodeInput'+num).val()
             let linksString = $('#linksInput'+num).val()
             let links = linksString.split(",");
-            console.log(num)
-            console.log(nodeString)
-            console.log(linksString)
-            console.log(links)
 
-            if(IsUniqueNode(nodeString)) {
+            if(IsUniqueNode(nodeString) && node!='') {
+                
                 node.push(nodeString)
-                member++
             }
 
-            CreateNewNodeFromLinks(links)
-
-            console.log('now code is :', node)
+            if(!IsLinkSameOwnNode(nodeString, links)) {
+                CreateNewNodeFromLinks(links)
+            }else {
+                alert('Your Node and Link is same name!!!')
+            }
+            
+            console.log('now node is :', node)
+            console.log('now member is :', member)
         }
 
         function CreateNewNodeFromLinks(links) {
             for(let i=0;i<links.length;i++) {
-                console.log('link check is', links[i])
-                if(IsUniqueNode(links[i])) {
+                if(IsUniqueNode(links[i]) && links[i]!=='') {
                     AppendNewNode(links[i], '')
                     node.push(links[i])
-                    member++
                 }
             }
+        }
+
+        function IsLinkSameOwnNode(node, links) {
+            for(let i=0;i<links.length;i++) {
+                if(node == links[i]) {
+                    return true
+                }
+            }
+            return false
         }
 
         function IsUniqueNode(name) {
@@ -81,24 +89,69 @@
             let appendString = 
                 '<div class="row justify-content-md-center">'
                     +'<div class="col-4 col-sm-4 mt-2">'
-                        +'<input value="'+val1+'" type="text" class="form-control" id="nodeInput'+member+'" placeholder="Enter node name">'
+                        +'<input value="'+val1+'" type="text" class="form-control nn" id="nodeInput'+member+'" placeholder="Enter node name">'
                     +'</div>'
                     +'<div class="col-8 col-sm-6 mt-2">'
-                        +'<textarea class="form-control" rows="5" id="linksInput'+member+'">'+val2+'</textarea>'
+                        +'<textarea class="form-control ll" rows="5" id="linksInput'+member+'">'+val2+'</textarea>'
                     +'</div>'
                     +'<div class="col-sm-2 mt-2">'
-                            +'<button onclick="AddLink(this.id);" id="addLink'+member+'"type="submit" class="btnAddLink btn btn-success btn-block">Add-link</button>'
+                            +'<button onclick="AddLink(this.id);" id="addLink'+member+'"type="submit" class="btnAddLink btn btn-success btn-block">Update</button>'
                     +'</div>'
                 +'</div>'
 
             $(appendString).insertBefore('#newNodeButton')
+            member++
+        }
+
+        function CheckFormat() {
+            let nodes = $('.nn')
+            let links = $('.ll')
+            console.log('nodes :', nodes.length)
+            console.log()
+            for(let i=1;i<nodes.length;i++) {
+                for(let j=0;j<i;j++) {
+                    let n1 = $('#'+nodes[i].id).val() 
+                    let n2 = $('#'+nodes[j].id).val() 
+                    if(n1==n2) {
+                        console.log('is same btw '+n1+', '+n2)
+                        return false
+                    }
+                }
+            }
+            console.log('links :', links)
+            return true
+        }
+
+
+
+        function MakeJsonData() {
+            let data = []
+            for(let i=0;i<member;i++) {
+                let obj = {}
+                let nodeName = $('#nodeInput'+i).val()
+                let linksString = $('#linksInput'+i).val()
+                //console.log(linksString)
+                //console.log(nodeName)
+                let links = linksString.split(",")
+                obj = {
+                    name: nodeName,
+                    imports: links
+                }
+                data.push(obj)
+            }
+            console.log('data is : ', data)
         }
 
         $(document).ready(function() {
             
             $('#newNodeButton').on('click', function() {
                 AppendNewNode('', '')
-                member++
+            })
+
+            $('#createButton').on('click', function() {
+                if(CheckFormat()) {
+                    MakeJsonData()
+                } 
             })
             
         })
