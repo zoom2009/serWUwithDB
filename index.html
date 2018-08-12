@@ -2,10 +2,12 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
 <body>
+    <h1 class="display-4">12345</h1>
     <script>
         //console.log('00')
         var diameter = 960,
@@ -20,23 +22,31 @@
             .radius(function(d) { return d.y; })
             .angle(function(d) { return d.x / 180 * Math.PI; });
 
+        //Add class or width & height for container here
         var svg = d3.select("body").append("svg")
             .attr("width", diameter)
             .attr("height", diameter)
+            .attr("class", "row")
             .append("g")
-            .attr("transform", "translate(" + radius + "," + radius + ")");
+            .attr("transform", "translate(" + radius + "," + radius + ")")
+            .attr("class", "col-sm-4")
 
         var link = svg.append("g").selectAll(".link"),
             node = svg.append("g").selectAll(".node");
         //console.log('11')
+
         d3.json("flare.json", function(error, classes) {
             if (error) throw error;
+
+            //our json data in here atr => classes
+            console.log(classes)
 
             var root = packageHierarchy(classes)
                 .sum(function(d) { return d.size; });
 
             cluster(root);
 
+            //Add class here for link (line)
             link = link
                 .data(packageImports(root.leaves()))
                 .enter().append("path")
@@ -44,6 +54,7 @@
                 .attr("class", "link")
                 .attr("d", line);
 
+            //Add class here for node
             node = node
                 .data(root.leaves())
                 .enter().append("text")
@@ -55,10 +66,10 @@
                 .on("mouseover", mouseovered)
                 .on("mouseout", mouseouted);
 
-            //After Everything
+            //After Everything do somethings
             $(document).ready(function() {
                 //console.log('222')
-                alert('sss')
+                //alert('sss')
             })
         });
         //console.log('33')

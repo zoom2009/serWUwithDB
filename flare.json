@@ -1,10 +1,12 @@
-[{
-    "name": "iit.mumbai.pub1",
-    "imports": ["iit.chennai.pub3"]
+[
+  {
+    "name": "p1",
+    "imports": ["p2"]
   }, {
-    "name": "iit.delhi.pub2",
-    "imports": ["iit.mumbai.pub1"]
+    "name": "p2",
+    "imports": ["p3"]
   }, {
-    "name": "iit.chennai.pub3",
-    "imports": ["iit.delhi.pub2"]
-  }]
+    "name": "p3",
+    "imports": ["p1"]
+  }
+]

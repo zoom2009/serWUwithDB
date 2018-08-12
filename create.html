@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Create Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-4 col-sm-4">
+                <label class="text-center d-block bg-secondary text-white py-1 rounded">Node</label>
+                <small class="form-text text-muted">Every node is many to many.</small>
+                <small class="form-text text-muted">Example input data : project1</small>
+            </div>
+            <div class="col-8 col-sm-6">
+                <label class="text-center d-block bg-secondary text-white py-1 rounded">Link</label>
+                <small class="form-text text-muted">Every link you created is node.</small>
+                <small class="form-text text-muted">Example input data : project1,project2,project3</small>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <form id="myForm" class="container my-3">
+        <a class="bg-success d-block text-center rounded mt-4" id="newNodeButton" href="#" data-toggle="tooltip" data-placement="top" title="Add new node"><i class="fas fa-plus p-2" style="color:white; font-size: 14px;"></i></a>
+        <button id="createButton" type="submit" class="btn btn-danger mt-5 d-block">Create Chart!</button>
+    </form>
+
+    <script>
+        var node = []
+        var member = 0
+
+        function AddLink(id) {
+            //id => addLink?
+            let num = id.substring(7);
+            let nodeString = $('#nodeInput'+num).val()
+            let linksString = $('#linksInput'+num).val()
+            let links = linksString.split(",");
+            console.log(num)
+            console.log(nodeString)
+            console.log(linksString)
+            console.log(links)
+
+            if(IsUniqueNode(nodeString)) {
+                node.push(nodeString)
+                member++
+            }
+
+            CreateNewNodeFromLinks(links)
+
+            console.log('now code is :', node)
+        }
+
+        function CreateNewNodeFromLinks(links) {
+            for(let i=0;i<links.length;i++) {
+                console.log('link check is', links[i])
+                if(IsUniqueNode(links[i])) {
+                    AppendNewNode(links[i], '')
+                    node.push(links[i])
+                    member++
+                }
+            }
+        }
+
+        function IsUniqueNode(name) {
+            for(let i=0;i<node.length;i++) {
+                if(name==node[i]) {
+                    return false
+                }
+            }
+            return true
+        }
+
+        function AppendNewNode(val1, val2) {
+            let appendString = 
+                '<div class="row justify-content-md-center">'
+                    +'<div class="col-4 col-sm-4 mt-2">'
+                        +'<input value="'+val1+'" type="text" class="form-control" id="nodeInput'+member+'" placeholder="Enter node name">'
+                    +'</div>'
+                    +'<div class="col-8 col-sm-6 mt-2">'
+                        +'<textarea class="form-control" rows="5" id="linksInput'+member+'">'+val2+'</textarea>'
+                    +'</div>'
+                    +'<div class="col-sm-2 mt-2">'
+                            +'<button onclick="AddLink(this.id);" id="addLink'+member+'"type="submit" class="btnAddLink btn btn-success btn-block">Add-link</button>'
+                    +'</div>'
+                +'</div>'
+
+            $(appendString).insertBefore('#newNodeButton')
+        }
+
+        $(document).ready(function() {
+            
+            $('#newNodeButton').on('click', function() {
+                AppendNewNode('', '')
+                member++
+            })
+            
+        })
+
+    </script>
+</body>
+</html>
