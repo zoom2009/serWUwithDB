@@ -262,7 +262,12 @@
             let isFound = false
             for(let i=0;i<links.length;i++) {
                 let string = $('#'+links[i].id).val()
-                let linksArray = string.split(',') 
+                let linksArray = string.split(',')
+                if(linksArray[0]=='' && linksArray.length==1) {
+                    isFound = true
+                    console.log('stop')
+                    break
+                } 
                 for(let j=0;j<linksArray.length;j++) {
                     isFound = false
                     for(k=0;k<nodes.length;k++) {
