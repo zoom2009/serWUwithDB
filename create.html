@@ -88,6 +88,13 @@
             }
         }
 
+        function UploadImage(id) {
+            let num = id.substring(8);
+            let btnID = 'btnImage'+num
+            console.log(id, 'is change')
+            $("#"+btnID).html('Change image')
+        }
+
         function AddLink(id) {
             //id => addLink?
             let num = id.substring(7);
@@ -177,8 +184,8 @@
                         +'<div class="row mt-2">'
                             +'<div class="col">'
                                 +'<div class="upload-btn-wrapper">'
-                                    +'<button class="btn-add-image btn">Upload a image</button>'
-                                    +'<input id="addImage'+member+'" type="file" name="data[image'+member+']" required/>'
+                                    +'<button id="btnImage'+member+'" class="btn-add-image btn">Upload a image</button>'
+                                    +'<input id="addImage'+member+'" type="file" name="data[image'+member+']" onchange="UploadImage(this.id)" required/>'
                                 +'</div>'
                             +'</div>'
                         +'</div>'
