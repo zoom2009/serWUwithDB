@@ -47,6 +47,22 @@
             <small class="text-muted d-block">@@@ If you won't press update button maybe your data will missing @@@</small>
             <small class="text-muted d-block">@@@ Get some bug or Need for Info contact <span><a href="#">afumagic3@gmail.com</a></span> @@@</small>
         <hr>
+    </div>
+    <form id="myForm" class="container my-3" method="POST" enctype="multipart/form-data" action="http://localhost:3000/photo-upload">
+        <div class="form-group row">
+            <label for="ChartInput" class="col-sm-2 col-form-label">Chart Name :</label>
+            <div class="col-sm-10">
+                <input name="data[chartName]" type="text" class="form-control" id="chartInput" placeholder="Enter chart name" required>
+            </div>
+        </div>
+        <div id="group-row" class="form-group row">
+            <label for="groupInput"g class="col-sm-2 col-form-label">Number of Group :</label>
+            <div class="col-sm-10">
+                <input onchange="MakeGroupInput(this.value)" name="data[groupNumber]" type="number" class="form-control" id="groupInput" placeholder="Enter number of group" required>
+            </div>
+        </div>
+
+        <hr>
         <div class="row mt-4">
             <div class="col-4 col-sm-4">
                 <label class="text-center d-block bg-secondary text-white py-1 rounded">Node</label>
@@ -59,8 +75,8 @@
                 <small class="form-text text-muted">Example input data : project1,project2,project3</small>
             </div>
         </div>
-    </div>
-    <form id="myForm" class="container my-3" method="POST" enctype="multipart/form-data" action="http://localhost:3000/photo-upload">
+        <hr>
+
         <a class="bg-success d-block text-center rounded mt-4" id="newNodeButton" href="#" data-toggle="tooltip" data-placement="top" title="Add new node"><i class="fas fa-plus p-2" style="color:white; font-size: 14px;"></i></a>
         <button id="createButton" type="submit" class="btn btn-primary mt-5 d-block">Create Chart!</button>
     </form>
@@ -68,6 +84,23 @@
     <script>
         var node = []
         var member = 0
+        
+        function MakeGroupInput(val) {
+            console.log('value :', val)
+            //clear and make new one
+            $('.gg').remove()
+            let htmlString = ''
+            for(let i=0;i<val;i++) {
+                htmlString += 
+                '<div class="form-group row gg">'
+                    +'<label for="groupInput'+i+'" class="col-sm-2 col-form-label">Name of Group'+(i+1)+' :</label>'
+                    +'<div class="col-sm-10">'
+                        +'<input name="data[group'+i+']" type="text" class="form-control" id="groupInput'+i+'" placeholder="Enter name of Group" required>'
+                    +'</div>'
+                +'</div>'   
+            }
+            $(htmlString).insertAfter("#group-row");
+        }
 
         function RemoveLink(id) {
             let num = id.substring(10);
