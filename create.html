@@ -156,17 +156,17 @@
                     +'<div class="col-4 col-sm-4 mt-2">'
                         +'<div class="row">'
                             +'<div class="col">'
-                                +'<input value="'+val1+'" type="text" class="form-control nn" id="nodeInput'+member+'" placeholder="Enter node name" required>'
+                                +'<input value="'+val1+'" type="text" class="form-control nn" id="nodeInput'+member+'" name="data[node'+member+']" placeholder="Enter node name" required>'
                             +'</div>'
                         +'</div>'
                         +'<div class="row">'
                             +'<div class="col">'
-                                +'<input value="'+val3+'" type="url" class="form-control" id="urlInput'+member+'" placeholder="Enter link url" required>'
+                                +'<input value="'+val3+'" type="url" class="form-control" id="urlInput'+member+'" name="data[url'+member+']" placeholder="Enter link url" required>'
                             +'</div>'
                         +'</div>'
                     +'</div>'
                     +'<div class="col-8 col-sm-6 mt-2">'
-                        +'<textarea class="form-control ll" rows="5" id="linksInput'+member+'">'+val2+'</textarea>'
+                        +'<textarea name="data[link'+member+']" class="form-control ll" rows="5" id="linksInput'+member+'">'+val2+'</textarea>'
                     +'</div>'
                     +'<div class="col-sm-2">'
                         +'<div class="row mt-2">'
@@ -178,7 +178,7 @@
                             +'<div class="col">'
                                 +'<div class="upload-btn-wrapper">'
                                     +'<button class="btn-add-image btn">Upload a image</button>'
-                                    +'<input id="addImage'+member+'" type="file" name="myFile" required/>'
+                                    +'<input id="addImage'+member+'" type="file" name="data[image'+member+']" required/>'
                                 +'</div>'
                             +'</div>'
                         +'</div>'
@@ -251,6 +251,26 @@
                 }
             }
 
+            //if link not is a node
+            let isFound = false
+            for(let i=0;i<links.length;i++) {
+                let string = $('#'+links[i].id).val()
+                let linksArray = string.split(',') 
+                for(let j=0;j<linksArray.length;j++) {
+                    isFound = false
+                    for(k=0;k<nodes.length;k++) {
+                        let n = $('#'+nodes[k].id).val() 
+                        if(n==linksArray[j]) {
+                            isFound = true
+                        }
+                    }
+                }
+            }
+            if(!isFound) {
+                console.log("not found !!!")
+                return false
+            }
+
             //if node name is same his own link
             for(let i=0;i<links.length;i++) {
                 let nodeString = $('#'+nodes[i].id).val()
@@ -282,6 +302,7 @@
             for(let i=0;i<member;i++) {
                 let obj = {}
                 let nodeName = $('#nodeInput'+i).val()
+                let url = $('#urlInput'+i).val()
                 let linksString = $('#linksInput'+i).val()
                 //console.log(linksString)
                 //console.log(nodeName)
@@ -291,11 +312,13 @@
                 }
                 obj = {
                     name: nodeName,
+                    url: url,
                     imports: links
                 }
                 data.push(obj)
             }
             console.log('data is : ', data)
+         
             console.log('jsonString data is : ', JSON.stringify(data))
         }
 
@@ -307,12 +330,12 @@
 
             $('#myForm').submit(function() {
                 if(CheckFormat()) {
-                    //MakeJsonData()
+                    MakeJsonData()
                     alert('Chart is created Success')
-                    return false ;
+                    return true ;
                 }
                 alert('Can not create, Watch your data or images and reCreate!')
-                return true
+                return false
             })
             
         })
