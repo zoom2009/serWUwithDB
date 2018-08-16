@@ -273,7 +273,13 @@
             //if groupNumberInput is not found in groupNumber
             for(let i=0;i<$('#groupInput').val();i++) {
                 //check if group number not same ter group input
-                
+                for(let j=0;j<nodes.length;j++) {
+                    let gn = $('#groupNumberInput'+j).val()-1
+                    if(gn < 0 || gn >= $('#groupInput').val()) {
+                        console.log('not found groupNumber input in groupNumber')
+                        return false
+                    }
+                }
             }
 
             //if node is same
