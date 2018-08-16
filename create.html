@@ -48,7 +48,7 @@
             <small class="text-muted d-block">@@@ Get some bug or Need for Info contact <span><a href="#">afumagic3@gmail.com</a></span> @@@</small>
         <hr>
     </div>
-    <form id="myForm" class="container my-3" method="POST" enctype="multipart/form-data" action="http://localhost:3000/photo-upload">
+    <form id="myForm" class="container my-3" method="POST" enctype="multipart/form-data" action="http://localhost:3000/submit-data">
         <div class="form-group row">
             <label for="ChartInput" class="col-sm-2 col-form-label">Chart Name :</label>
             <div class="col-sm-10">
@@ -57,7 +57,7 @@
         </div>
         <div id="group-row" class="form-group row">
             <label for="groupInput"g class="col-sm-2 col-form-label">Number of Group :</label>
-            <div class="col-sm-10">
+            <div class="col-sm-4">
                 <input onchange="MakeGroupInput(this.value)" name="data[groupNumber]" type="number" class="form-control" id="groupInput" placeholder="Enter number of group" required>
             </div>
         </div>
@@ -94,8 +94,12 @@
                 htmlString += 
                 '<div class="form-group row gg">'
                     +'<label for="groupInput'+i+'" class="col-sm-2 col-form-label">Name of Group'+(i+1)+' :</label>'
-                    +'<div class="col-sm-10">'
+                    +'<div class="col-sm-4">'
                         +'<input name="data[group'+i+']" type="text" class="form-control" id="groupInput'+i+'" placeholder="Enter name of Group" required>'
+                    +'</div>'
+                    +'<label for="groupColorInput'+i+'" class="col-sm-2 col-form-label">Color of Group'+(i+1)+' :</label>'
+                    +'<div class="col-sm-4">'
+                        +'<input name="data[groupColor'+i+']" type="text" class="form-control" id="groupColorInput'+i+'" placeholder="Enter color of Group" required>'
                     +'</div>'
                 +'</div>'   
             }
