@@ -262,11 +262,18 @@
                 }
             }
 
+            //if some url is emply
             for(let i=0;i<nodes.length;i++) {
                 console.log('url'+i+' :', $('#urlInput'+i).val())
                 if($('#urlInput'+i).val() == '') {
                     return false
                 }
+            }
+
+            //if groupNumberInput is not found in groupNumber
+            for(let i=0;i<$('#groupInput').val();i++) {
+                //check if group number not same ter group input
+                
             }
 
             //if node is same
@@ -347,30 +354,6 @@
             return true
         }
 
-        function MakeJsonData() {
-            let data = []
-            for(let i=0;i<member;i++) {
-                let obj = {}
-                let nodeName = $('#nodeInput'+i).val()
-                let url = $('#urlInput'+i).val()
-                let linksString = $('#linksInput'+i).val()
-                //console.log(linksString)
-                //console.log(nodeName)
-                let links = linksString.split(",")
-                if(links.length==1 && links[0]=='') {
-                    links = []
-                }
-                obj = {
-                    name: nodeName,
-                    url: url,
-                    imports: links
-                }
-                data.push(obj)
-            }
-            console.log('data is : ', data)
-         
-            console.log('jsonString data is : ', JSON.stringify(data))
-        }
 
         $(document).ready(function() {
             
@@ -380,7 +363,6 @@
 
             $('#myForm').submit(function() {
                 if(CheckFormat()) {
-                    MakeJsonData()
                     alert('Chart is created Success')
                     return true ;
                 }
