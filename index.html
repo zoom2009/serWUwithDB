@@ -5,14 +5,44 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400,700" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Merriweather', serif;
+        }
+        .main-title {
+            color: black;
+            font-weight: bold;
+            font-size: 30px;
+        }
+        #chart-title {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1 class="display-4">12345</h1>
+    <div id="chart-title">
+        <div class="main-title">
+            Tittle-Name001
+        </div>
+        <div>group001</div>
+        <div>group002</div>
+        <div>group003</div>
+        <div>group004</div>
+        <div>group005</div>
+    </div>
+    
     <script>
-        //console.log('00')
+        let circleSize = 120 
+
         var diameter = 960,
             radius = diameter / 2,
-            innerRadius = radius - 120;
+            innerRadius = circleSize; // circle size 120-360
 
         var cluster = d3.cluster()
             .size([360, innerRadius]);
@@ -33,7 +63,7 @@
 
         var link = svg.append("g").selectAll(".link"),
             node = svg.append("g").selectAll(".node");
-        //console.log('11')
+
 
         d3.json("flare.json", function(error, classes) {
             if (error) throw error;
@@ -68,11 +98,23 @@
 
             //After Everything do somethings
             $(document).ready(function() {
-                //console.log('222')
-                //alert('sss')
+                //----------------------node---------------------
+                let fSize = 11 ;
+                let _1nodeColor = '#ccc' //before hover
+                let _2nodeColor = '#000' //after hover
+                $(".node").css("fill", _1nodeColor);
+                $(".node").css("font-size", fSize+"px");
+                $(".node").css("cursor", "pointer");
+                $(".node").hover(function() {
+                    $(this).css("fill", _2nodeColor)
+                }, function() {
+                    $(this).css("fill", _1nodeColor)
+                });
+                //-----------------------------------------------
             })
+
         });
-        //console.log('33')
+
         function mouseovered(d) {
             node
                 .each(function(n) { n.target = n.source = false; });
@@ -87,7 +129,6 @@
                 .classed("node--target", function(n) { return n.target; })
                 .classed("node--source", function(n) { return n.source; });
 
-            //console.log('44')
         }
 
         function mouseouted(d) {
@@ -98,7 +139,6 @@
             node
                 .classed("node--target", false)
                 .classed("node--source", false);
-            //console.log('55')
         }
         console.log('66')
         // Lazily construct the package hierarchy from class names.
@@ -115,15 +155,12 @@
                         node.key = name.substring(i + 1);
                     }
                 }
-                //console.log('77')
                 return node;
             }
 
             classes.forEach(function(d) {
                 find(d.name, d);
-                //console.log('88')
             });
-            //console.log('99')
             return d3.hierarchy(map[""]);
         }
         console.log('100')
@@ -135,7 +172,6 @@
             // Compute a map from name to node.
             nodes.forEach(function(d) {
                 map[d.data.name] = d;
-                //console.log('101')
             });
 
             // For each import, construct a link from the source to target node.
@@ -143,11 +179,8 @@
                 if (d.data.imports) d.data.imports.forEach(function(i) {
                     imports.push(map[d.data.name].path(map[i]));
                 });
-                //console.log('102')
             });
-            //console.log('103')
             return imports;
         }
-        //console.log('104')
     </script>
 </body>

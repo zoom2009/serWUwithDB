@@ -9,7 +9,7 @@
 
 .link {
   stroke: steelblue;
-  stroke-opacity: 0.4;
+  stroke-opacity: 0.2;
   fill: none;
   pointer-events: none;
 }
@@ -21,7 +21,7 @@
 }
 
 .node--source {
-  fill: #2ca02c;
+  fill: #d62728;
 }
 
 .node--target {
@@ -39,5 +39,5 @@
 }
 
 .link--target {
-  stroke: #2ca02c;
+  stroke: #d62728;
 }
